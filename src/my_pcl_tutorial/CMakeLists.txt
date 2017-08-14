@@ -119,9 +119,13 @@ catkin_package(
 include_directories(
 # include
   ${catkin_INCLUDE_DIRS}
+  ${PCL_INCLUDE_DIRS}
+  ##/usr/include/vtk-5.8
 )
+link_directories(${PCL_LIBRARY_DIRS})
+add_definitions(${PCL_DEFINITIONS})
 add_executable(example src/example.cpp)
-target_link_libraries(example ${catkin_LIBRARIES})
+target_link_libraries(example ${catkin_LIBRARIES} libvtkCommon.so libvtkFiltering.so libvtkRendering.so)
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
