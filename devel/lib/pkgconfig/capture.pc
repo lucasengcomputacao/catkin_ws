@@ -1,0 +1,8 @@
+prefix=/home/lucas/catkin_ws/devel
+
+Name: capture
+Description: Description of capture
+Version: 0.0.1
+Cflags: 
+Libs: -L/home/lucas/catkin_ws/devel/lib 
+Requires: 

@@ -1,0 +1,8 @@
+prefix=/home/lucas/catkin_ws/install
+
+Name: captura
+Description: Description of captura
+Version: 0.0.0
+Cflags: 
+Libs: -L/home/lucas/catkin_ws/install/lib 
+Requires: 
