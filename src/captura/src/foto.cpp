@@ -37,7 +37,8 @@ void cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
 
   //Converte uma nuvem de pontos em uma mensagem
   pcl_conversions::toPCL(*cloud_msg, *cloud);
-
+//Função que salva a nuvem de pontos como um arquivo pcd
+  pcl::io::savePCDFile ("test_pcd.pcd",*cloud_msg);
   /*
   *Filtro VoxelGrid
   */
@@ -45,9 +46,8 @@ void cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
   sor.setInputCloud (cloudPtr);
   sor.setLeafSize (0.1, 0.1, 0.1);
   sor.filter (cloud_filtered);
-//Função que salva a nuvem de pontos como um arquivo pcd
- pcl::io::savePCDFile ("test_pcd.pcd",cloud_filtered);
 
+ 
   /*
   *Mensagem do tipo PointCloud2 output
   *Conversão da mensagem ara pcl
@@ -68,7 +68,7 @@ int main (int argc, char** argv)
   *mais o nome do no logo embaixo no construtor e tambem destrututor
   *
   */
-  ros::init (argc, argv, "captura");
+  ros::init (argc, argv, "my_pcl_tutorial");
   ros::NodeHandle nh;
 
   // Create a ROS subscriber for the input point cloud
@@ -80,8 +80,8 @@ int main (int argc, char** argv)
 pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ>);
 
   //Função para impressão da matriz no terminal da nuvem de pontos
-
- /* if (pcl::io::loadPCDFile<pcl::PointXYZ> ("test_pcd.pcd", *cloud) == -1) //* load the file
+/*
+  if (pcl::io::loadPCDFile<pcl::PointXYZ> ("test_pcd.pcd", *cloud) == -1) //* load the file
   {
     PCL_ERROR ("Couldn't read file test_pcd.pcd \n");
     return (-1);
