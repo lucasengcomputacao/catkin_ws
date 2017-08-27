@@ -1,5 +1,7 @@
 //Bibliotecas de inclusão ros
 #include <ros/ros.h>
+
+
 /*Bilbiotecas a primeira e para passar mensagens
 *Pcl_conversions para conversão de pontos em std_msg
 *pcl point cloud para nuvem de pontos
@@ -10,6 +12,7 @@
 #include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
 #include <iostream>
+
 #include <pcl/io/pcd_io.h>
 /*Openni grabber framework de entrda e saida
 *Biblioteca de visualization
@@ -26,7 +29,7 @@ ros::Publisher pub;
 
 void cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
 {
-  
+   
   /*
   *Objeto Cloud do tipo PointCloud2
   * Objeto ponteiro cloudPTR (Definido como struct)
@@ -38,7 +41,25 @@ void cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
   //Converte uma nuvem de pontos em uma mensagem
   pcl_conversions::toPCL(*cloud_msg, *cloud);
 //Função que salva a nuvem de pontos como um arquivo pcd
-  pcl::io::savePCDFile ("test_pcd.pcd",*cloud_msg);
+  int i=1;
+  char tecla;
+  cout << "Pressione c para  capturar uma  nuvem ou qualquer outra tecla para sair"<<endl;
+  cin>>tecla;
+  if (tecla=='c'){
+    while (tecla =='c' || tecla == 'C')
+      {
+      std::stringstream ft;
+      ft <<"ft0"<<i<<".pcd";
+      pcl::io::savePCDFile (ft.str (), *cloud_msg);
+      i++;
+      cout <<"Pressione c para capturar ou qualquer outra tecla para retornar ao inicio"<<endl;
+      cin>>tecla;
+      printf("\e[H\e[2J");
+    }
+  }else{
+    ros :: shutdown ();
+    cout<<"fim do programa"<<endl;
+  }
   /*
   *Filtro VoxelGrid
   */
@@ -68,9 +89,9 @@ int main (int argc, char** argv)
   *mais o nome do no logo embaixo no construtor e tambem destrututor
   *
   */
-  ros::init (argc, argv, "my_pcl_tutorial");
+  ros::init (argc, argv, "captura");
   ros::NodeHandle nh;
-
+  cout<<"Iniciando programa de captura da nuvem de pontos"<<endl;
   // Create a ROS subscriber for the input point cloud
   ros::Subscriber sub = nh.subscribe<sensor_msgs::PointCloud2> ("input", 1, cloud_cb);
 
@@ -79,22 +100,7 @@ int main (int argc, char** argv)
 
 pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ>);
 
-  //Função para impressão da matriz no terminal da nuvem de pontos
-/*
-  if (pcl::io::loadPCDFile<pcl::PointXYZ> ("test_pcd.pcd", *cloud) == -1) //* load the file
-  {
-    PCL_ERROR ("Couldn't read file test_pcd.pcd \n");
-    return (-1);
-  }
-  std::cout << "Loaded "
-            << cloud->width * cloud->height
-            << " data points from test_pcd.pcd with the following fields: "
-            << std::endl;
-  for (size_t i = 0; i < cloud->points.size (); ++i)
-    std::cout << "    " << cloud->points[i].x
-              << " "    << cloud->points[i].y
-              << " "    << cloud->points[i].z << std::endl;
-*/
+  
   //Loop do terminal para finalizar o processo com ctrl c
   ros::spin ();
 }
