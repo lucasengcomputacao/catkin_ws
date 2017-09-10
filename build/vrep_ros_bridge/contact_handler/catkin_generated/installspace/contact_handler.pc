@@ -1,0 +1,8 @@
+prefix=/home/lucas/catkin_ws/install
+
+Name: contact_handler
+Description: Description of contact_handler
+Version: 1.0.0
+Cflags: -I/home/lucas/catkin_ws/install/include
+Libs: -L/home/lucas/catkin_ws/install/lib -lcontact_handler
+Requires: roscpp geometry_msgs vrep_ros_plugin gazebo_msgs
